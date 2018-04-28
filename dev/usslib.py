@@ -34,10 +34,12 @@ class UssExpressionsManager:
 
     def _load_xml_file(self):
         # type: () -> minidom.Document
-        if utils.isFile(self.USS_FILE_PATH):
+        # utils.isFile works only in home directory
+        try:
             with open(self.USS_FILE_PATH, 'r') as f:
                 return minidom.parseString(f.read())
-        return self._create_empty_xml()
+        except:
+            return self._create_empty_xml()
 
     def _get_pretty_xml_string(self):
         # type: () -> str
