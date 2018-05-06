@@ -5,4 +5,4 @@ API_VERSION = 'API_v1.0'
 
 MOD_NAME = 'USS_DEMO_MOD'
 
-register_uss_expression_swf('../../unbound/flash/mycooluss.swf')
+register_uss_expression_swf('../unbound/flash/mycooluss.swf')
