@@ -2,7 +2,7 @@
 
 In case when you do not want to create yout custom Main.py script, you can use this tool.
 
-Just create <somename>.xml file in FMods/uss directory and paste there something like following:
+Just create <somename>.xml file in PnFMods/USSHelper/FMods/uss directory and paste there something like following:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <uss>

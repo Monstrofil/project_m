@@ -2,6 +2,7 @@
 
 RES_PACKAGES_PATH = '../../../../res_packages/'
 
+
 class PkgMgr:
     def __init__(self, pkg_name):
         self._pkg_name = pkg_name

@@ -62,6 +62,12 @@ class UssExpressionsManager:
                 continue
             yield item.attributes['path'].value
 
+    def _get_node_by_path(self, path):
+        # type: (str) -> minidom.Element
+        for item in self._expressions_list.childNodes:
+            if item.attributes and item.getAttribute('path') == path:
+                return item
+
     def _get_expressions_list(self):
         # type: () -> minidom.Element
         expressions, = self._xml_file.getElementsByTagName(self.USS_EXPRESSIONS_TAG)
@@ -79,7 +85,8 @@ class UssExpressionsManager:
             print('[INFO]: %s is already registered in %s' % (uss_path, self.USS_XML_NAME))
             return
         expressions = self._get_expressions_list()
-        expressions.appendChild(self._create_file_node(uss_path))
+        uss_element = self._get_node_by_path('USSExpressions.swf')
+        expressions.insertBefore(self._create_file_node(uss_path), uss_element)
         self._save_xml_file()
         print('[INFO]: %s successfully registered in %s' % (uss_path, self.USS_XML_NAME))
 
