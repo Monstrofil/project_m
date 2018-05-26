@@ -19,4 +19,9 @@
     <action type="remove" target="controllers">
         <controller class="lesta.dialogs.battle_window_controllers.UnboundElementController" clips="unboundDogTagKillCam"/>
     </action>
+
+    <action type="add" target="controllers">
+        <controller class="lesta.dialogs.battle_window_controllers.UnboundElementController" clips="unboundSecondaryArmament"/>
+    </action>
+
 </battle_elements.xml>

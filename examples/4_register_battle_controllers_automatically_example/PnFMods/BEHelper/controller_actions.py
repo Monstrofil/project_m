@@ -48,14 +48,27 @@ class AddControllerAction(AddAction):
         AddAction.__init__(self, _xml_document, _action)
         self._elements = _action.getElementsByTagName('controller')
 
+    def _look_for_controllers_partly_matching_clips(self, controllers, clips):
+        for controller in controllers:
+            items = controller.getAttribute('clips').split(',')
+            if set(items) & set(clips):
+                yield controller
+
     def run(self):
         for controller in modapi_map(Controller, self._elements):
-            item = self._get_element_by_name_and_attributes(
+            items = self._get_elements_by_name_and_attributes(
                 'controller', **{'class': controller.get_class()})
-            if item:
-                print('[INFO]: controller %s already added' % controller.get_class())
+            tmp = list(self._look_for_controllers_partly_matching_clips(items, controller.get_clips()))
+            if len(tmp) == 1:
+                print('[INFO]: controller %s:%s already added' % (controller.get_class(),
+                                                                  controller.get_clips()))
                 return True
-            elif self._before:
+            elif len(tmp) > 1:
+                print('[INFO]: unable to detect controller %s:%s, multiple results found' % (controller.get_class(),
+                                                                                             controller.get_clips()))
+                return True
+
+            if self._before:
                 other = self._get_element_by_name_and_attributes(
                     'element', **{'class': self._before})
                 if other is None:
