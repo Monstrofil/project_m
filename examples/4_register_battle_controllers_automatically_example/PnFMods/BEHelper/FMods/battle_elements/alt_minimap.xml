@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<battle_elements.xml>
+    <!-- https://forum.worldofwarships.ru/topic/55277- -->
+    <action type="add" target="elementList">
+        <element name="altMinimap" class="__ModLoader" url="alt_minimap.swf"/>
+    </action>
+    <action type="add" target="controllers">
+        <controller name="minimapController" class="com.w03l.alt.battle_controllers.AltMinimapController" clips="minimapClip"/>
+    </action>
+    <action type="remove" target="controllers">
+        <controller name="minimapController" class="lesta.dialogs.battle_window_controllers.MinimapController"/>
+    </action>
+</battle_elements.xml>

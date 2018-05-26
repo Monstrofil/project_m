@@ -1,6 +1,0 @@
-<?xml version="1.0" ?>
-<battle_elements.xml>
-    <action type="add" target="controllers">
-        <controller class="my.test.controller" clips="myclip"/>
-    </action>
-</battle_elements.xml>
