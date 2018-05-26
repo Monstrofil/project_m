@@ -36,7 +36,6 @@ class Element:
 
     def get_xml_item(self):
         # type: () -> minidom.Element
-        self._xml = minidom.Element('element')
         self._xml.setAttribute(self.NAME, self._name)
         self._xml.setAttribute(self.CLASS, self._class)
         self._xml.setAttribute(self.URL, self._url)
@@ -71,7 +70,6 @@ class Controller:
     def add_clip(self, clip):
         if clip not in self._clips:
             self._clips.append(clip)
-
 
     def get_xml_item(self):
         # type: (minidom.Element) -> minidom.Element

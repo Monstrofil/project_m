@@ -2,7 +2,9 @@
 <battle_elements.xml>
     <!-- https://forum.worldofwarships.ru/topic/55277- -->
     <action type="add" target="elementList">
-        <element name="altMinimap" class="__ModLoader" url="alt_minimap.swf"/>
+        <element name="altMinimap" class="__ModLoader" url="alt_minimap.swf">
+            <properties config='../unbound/secondary_armament.xml' rootElementId='SecondaryArmament' hitTest = "true"/>
+        </element>
     </action>
     <action type="add" target="controllers">
         <controller name="minimapController" class="com.w03l.alt.battle_controllers.AltMinimapController" clips="minimapClip"/>
