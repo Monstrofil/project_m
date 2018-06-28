@@ -28,21 +28,21 @@ class PkgMgr:
         with open(idx_path, 'rb') as f:
             f.seek(16)
             items_amount = int(f.read(4)[::-1].encode('hex'), 16)
-            f.seek(24)
             files_amount = int(f.read(4)[::-1].encode('hex'), 16)
 
-            f.seek(40)
+            f.seek(56)
             for i in xrange(items_amount):
+                u1 = f.read(8).encode('hex')
+                u2 = f.read(8).encode('hex')
                 id_ = f.read(8).encode('hex')
                 parent_id = f.read(8).encode('hex')
-
-                f.read(8)
 
                 node = Node(id_, parent_id, self)
                 self._nodes_list.append(node)
                 self._nodes_by_id[id_] = node
 
             strings = []
+
             for i in xrange(items_amount):
                 s = ''
                 j = f.read(1)
@@ -54,18 +54,16 @@ class PkgMgr:
                 continue
 
             for i in xrange(files_amount):
-                offset = int(f.read(4)[::-1].encode('hex'), 16)
-                f.read(16)
-                items_amount = int(f.read(4)[::-1].encode('hex'), 16)
-                f.read(8)
-
                 id_ = f.read(8).encode('hex')
+                f.read(8)
+                offset = int(f.read(4)[::-1].encode('hex'), 16)
+                f.read(12)
+                items_amount = int(f.read(4)[::-1].encode('hex'), 16)
+                f.read(4)
                 file_ = Location(offset, items_amount)
                 self._files[id_] = file_
-
                 f.read(8)
-
-            f.read(21)
+            f.read(24)
             self._pkg_path = RES_PACKAGES_PATH + f.read()[:-1]
 
         for node in self._nodes_list:
@@ -123,7 +121,7 @@ class Node:
 class Location:
     def __init__(self, offset, size):
         self.offset = offset + 5  # skip file header
-        self.size = size
+        self.size = size - 5  # also skip 5 from tail
 
     def __str__(self):
         return '{0}:{1}'.format(self.offset, self.size)
