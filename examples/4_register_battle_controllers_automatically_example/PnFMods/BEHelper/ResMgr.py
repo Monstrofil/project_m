@@ -120,8 +120,8 @@ class Node:
 
 class Location:
     def __init__(self, offset, size):
-        self.offset = offset + 5  # skip file header
-        self.size = size - 5  # also skip 5 from tail
+        self.offset = offset
+        self.size = size
 
     def __str__(self):
         return '{0}:{1}'.format(self.offset, self.size)
