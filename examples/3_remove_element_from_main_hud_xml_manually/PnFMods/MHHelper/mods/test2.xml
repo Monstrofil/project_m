@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<main_hud_pc.xml>
+    <remove tag="block" className="MainHUDPCContainer"/>
+</main_hud_pc.xml>
