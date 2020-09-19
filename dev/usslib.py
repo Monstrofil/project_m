@@ -13,15 +13,26 @@ __author__ = "Aleksandr Shyshatsky"
 
 
 class UssExpressionsManager:
-    USS_XML_NAME = 'USSExpressionsLoader.xml'
-    USS_FILE_PATH = '../../gui/flash/' + USS_XML_NAME
+    USS_XML_NAME = 'uss_settings.xml'
+    USS_FILE_PATH = '../../gui/' + USS_XML_NAME
     USS_XML_BASE = """
-    <data>
-      <expressions_files>
-        <file path="USSExpressions.swf" />
-      </expressions_files>
-    </data>"""
-    USS_EXPRESSIONS_TAG = 'expressions_files'
+    <uss_settings.xml>
+  <default>
+	<xmlfile>../unbound/styles.xml</xmlfile>
+	<xmlfile>../unbound/markup.xml</xmlfile>
+	<swffile>USSExpressions.swf</swffile>
+  </default>
+  
+  <mods>
+    <!--
+       Add your modded XML and SWF paths here. Modded contetnt should be put into the unbound/mods folder.
+       Example:
+       <xmlfile>../unbound/mods/carousel_extended.xml</xmlfile>
+       <swffile>../unbound/mods/carousel_extended.swf</swffile>
+    -->
+  </mods>
+</uss_settings.xml>"""
+    USS_EXPRESSIONS_TAG = 'default'
 
     def __init__(self):
         self._xml_file = self._load_xml_file()
@@ -57,16 +68,8 @@ class UssExpressionsManager:
 
     def _iter_registered_files(self):
         # type: () -> Generator[str]
-        for item in self._expressions_list.childNodes:
-            if item.attributes is None:
-                continue
-            yield item.attributes['path'].value
-
-    def _get_node_by_path(self, path):
-        # type: (str) -> minidom.Element
-        for item in self._expressions_list.childNodes:
-            if item.attributes and item.getAttribute('path') == path:
-                return item
+        for item in self._expressions_list.getElementsByTagName('swffile'):
+            yield item.firstChild.nodeValue
 
     def _get_expressions_list(self):
         # type: () -> minidom.Element
@@ -75,8 +78,9 @@ class UssExpressionsManager:
 
     def _create_file_node(self, path):
         # type: (str) -> minidom.Element
-        node = self._xml_file.createElement('file')
-        node.setAttribute('path', path)
+        node = self._xml_file.createElement('swffile')
+        text = self._xml_file.createTextNode(path)
+        node.appendChild(text)
         return node
 
     def register_uss_expression_swf(self, uss_path):
@@ -85,8 +89,7 @@ class UssExpressionsManager:
             print('[INFO]: %s is already registered in %s' % (uss_path, self.USS_XML_NAME))
             return
         expressions = self._get_expressions_list()
-        uss_element = self._get_node_by_path('USSExpressions.swf')
-        expressions.insertBefore(self._create_file_node(uss_path), uss_element)
+        expressions.appendChild(self._create_file_node(uss_path))
         self._save_xml_file()
         print('[INFO]: %s successfully registered in %s' % (uss_path, self.USS_XML_NAME))
 
